@@ -1,0 +1,27 @@
+name: ci-js-workflow
+on:
+  pull_request:
+    branches:
+      - develop
+jobs:
+  check-application:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Nodejs
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20.11.1
+
+      - name: Install
+        run: npm install
+
+      - name: Test
+        run: npm test
+
+      - name: SonarCloud Scan
+        uses: SonarSource/sonarcloud-github-action@master
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
